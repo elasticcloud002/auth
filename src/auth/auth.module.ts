@@ -29,6 +29,6 @@ import { RefreshTokenMiddleware } from './middlewares/refresh-token.middleware';
 })
 export class AuthModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(RefreshTokenMiddleware).forRoutes('refresh-token');
+    consumer.apply(RefreshTokenMiddleware).forRoutes('auth/refresh-token');
   }
 }
