@@ -2,10 +2,10 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { getModelToken } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-
-import { User } from '../src/auth/schemas/user.schema';
 import { Response } from 'supertest';
 import * as request from 'supertest';
+
+import { User } from '../src/auth/schemas/user.schema';
 import { AppModule } from './../src/app.module';
 import { IUser } from 'src/auth/interfaces/user.interface';
 

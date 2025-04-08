@@ -1,8 +1,8 @@
-import { RefreshTokenMiddleware } from './refresh-token.middleware';
 import { UnauthorizedException } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { Types } from 'mongoose';
 
+import { RefreshTokenMiddleware } from './refresh-token.middleware';
 import { AuthHelper } from '../helpers/auth.helper';
 
 const mockAuthHelper = {

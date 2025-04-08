@@ -1,9 +1,10 @@
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Module } from '@nestjs/common';
+import * as Joi from 'joi';
+
 import { AuthModule } from './auth/auth.module';
 import { DashboardModule } from './dashboard/dashboard.module';
-import * as Joi from 'joi';
 
 @Module({
   imports: [
