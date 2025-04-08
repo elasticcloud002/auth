@@ -1,18 +1,174 @@
-import { Test, TestingModule } from '@nestjs/testing';
+import { Types } from 'mongoose';
+
 import { AuthService } from './auth.service';
+import { UserProvider } from './providers/user.provider';
+import { AuthHelper } from './helpers/auth.helper';
+import { IJwtPayload } from './interfaces/jwt-payload.interface';
+import { User } from './schemas/user.schema';
+
+jest.mock('./providers/user.provider');
+jest.mock('./helpers/auth.helper');
 
 describe('AuthService', () => {
-  let service: AuthService;
+  let authService: AuthService;
+  let mockUserProvider: jest.Mocked<UserProvider>;
+  let mockAuthHelper: jest.Mocked<AuthHelper>;
 
-  beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
-      providers: [AuthService],
-    }).compile();
+  beforeEach(() => {
+    mockUserProvider = {
+      create: jest.fn(),
+      getByEmail: jest.fn(),
+      userResponse: jest.fn(),
+    } as unknown as jest.Mocked<UserProvider>;
 
-    service = module.get<AuthService>(AuthService);
+    mockAuthHelper = {
+      hash: jest.fn(),
+      compare: jest.fn(),
+      signAuthToken: jest.fn(),
+      signRefreshToken: jest.fn(),
+      verifyToken: jest.fn(),
+      extractToken: jest.fn(),
+    } as unknown as jest.Mocked<AuthHelper>;
+
+    authService = new AuthService(mockUserProvider, mockAuthHelper);
   });
 
-  it('should be defined', () => {
-    expect(service).toBeDefined();
+  it('should sign up a new user and return a user with tokens', async () => {
+    const dto = {
+      name: 'John',
+      email: 'john@example.com',
+      password: 'password',
+      confirmPassword: 'password',
+    };
+    const hashedPassword = 'hashedPassword';
+
+    const user = {
+      _id: new Types.ObjectId(),
+      name: dto.name,
+      email: dto.email,
+      password: hashedPassword,
+    };
+
+    const payload: IJwtPayload = {
+      sub: user._id,
+      email: user.email,
+    };
+
+    const authToken = 'auth123';
+    const refreshToken = 'refresh456';
+
+    mockAuthHelper.hash.mockResolvedValue(hashedPassword);
+    mockUserProvider.create.mockResolvedValue(user as unknown as User);
+    mockAuthHelper.signAuthToken.mockReturnValue(authToken);
+    mockAuthHelper.signRefreshToken.mockReturnValue(refreshToken);
+    mockUserProvider.userResponse.mockReturnValue({
+      id: user._id,
+      name: user.name,
+      email: user.email,
+      authToken,
+      refreshToken,
+    });
+
+    const result = await authService.signUp(dto);
+
+    expect(mockUserProvider.create).toHaveBeenCalledWith(
+      dto.name,
+      dto.email,
+      hashedPassword,
+    );
+
+    expect(mockAuthHelper.signAuthToken).toHaveBeenCalledWith(payload);
+    expect(mockAuthHelper.signRefreshToken).toHaveBeenCalledWith(payload);
+
+    expect(mockUserProvider.userResponse).toHaveBeenCalledWith(
+      user,
+      authToken,
+      refreshToken,
+    );
+
+    expect(result).toEqual({
+      id: user._id,
+      name: user.name,
+      email: user.email,
+      authToken,
+      refreshToken,
+    });
+  });
+
+  it('should sign in a user and return tokens', async () => {
+    const dto = {
+      email: 'john@example.com',
+      password: 'password',
+    };
+
+    const user = {
+      _id: new Types.ObjectId(),
+      name: 'John',
+      email: dto.email,
+      password: 'hashedPassword',
+    };
+
+    const payload: IJwtPayload = {
+      sub: user._id,
+      email: user.email,
+    };
+
+    const authToken = 'auth123';
+    const refreshToken = 'refresh456';
+
+    mockUserProvider.getByEmail.mockResolvedValue(user as unknown as User);
+    mockAuthHelper.compare.mockResolvedValue(true);
+    mockAuthHelper.signAuthToken.mockReturnValue(authToken);
+    mockAuthHelper.signRefreshToken.mockReturnValue(refreshToken);
+    mockUserProvider.userResponse.mockReturnValue({
+      id: user._id,
+      name: user.name,
+      email: user.email,
+      authToken,
+      refreshToken,
+    });
+
+    const result = await authService.signIn(dto);
+
+    expect(mockUserProvider.getByEmail).toHaveBeenCalledWith(dto.email);
+
+    expect(mockAuthHelper.compare).toHaveBeenCalledWith(
+      dto.password,
+      user.password,
+    );
+
+    expect(mockAuthHelper.signAuthToken).toHaveBeenCalledWith(payload);
+    expect(mockAuthHelper.signRefreshToken).toHaveBeenCalledWith(payload);
+
+    expect(mockUserProvider.userResponse).toHaveBeenCalledWith(
+      user,
+      authToken,
+      refreshToken,
+    );
+
+    expect(result).toEqual({
+      id: user._id,
+      name: user.name,
+      email: user.email,
+      authToken,
+      refreshToken,
+    });
+  });
+
+  it('should return a new auth token when refreshToken is called', () => {
+    const payload: IJwtPayload = {
+      sub: new Types.ObjectId(),
+      email: 'john@example.com',
+    };
+
+    const newAuthToken = 'newAuthToken';
+
+    mockAuthHelper.signAuthToken.mockReturnValue(newAuthToken);
+
+    const result = authService.refreshToken(payload);
+
+    expect(mockAuthHelper.signAuthToken).toHaveBeenCalledWith(payload);
+
+    expect(result).toEqual({ authToken: newAuthToken });
   });
 });

@@ -1,4 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
+
 import { DashboardService } from './dashboard.service';
 
 describe('DashboardService', () => {
@@ -14,5 +15,10 @@ describe('DashboardService', () => {
 
   it('should be defined', () => {
     expect(service).toBeDefined();
+  });
+
+  it('should return a success message', () => {
+    const result = service.dashboard();
+    expect(result).toEqual({ message: 'Successful' });
   });
 });

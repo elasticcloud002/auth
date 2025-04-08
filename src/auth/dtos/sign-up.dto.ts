@@ -1,6 +1,6 @@
 import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
 
-import { IsEqualTo } from 'src/decorators/is-equal-to.decorator';
+import { IsEqualTo } from '../../decorators/is-equal-to.decorator';
 
 export class SignUpDto {
   @IsString()
