@@ -34,7 +34,8 @@ export class AuthHelper {
   }
 
   extractToken(request: Request): string | undefined {
-    const [key, token] = request.headers.authorization?.split(' ') ?? [];
+    const authHeader = request.headers?.authorization;
+    const [key, token] = authHeader?.split(' ') ?? [];
     return key === 'Bearer' ? token : undefined;
   }
 }
