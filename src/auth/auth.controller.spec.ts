@@ -58,6 +58,7 @@ describe('AuthController', () => {
     const result = await authController.signUp(signUpDto);
 
     expect(result).toEqual(mockUser);
+    // eslint-disable-next-line @typescript-eslint/unbound-method
     expect(authService.signUp).toHaveBeenCalledWith(signUpDto);
   });
 
@@ -80,6 +81,7 @@ describe('AuthController', () => {
     const result = await authController.signIn(signInDto);
 
     expect(result).toEqual(mockUser);
+    // eslint-disable-next-line @typescript-eslint/unbound-method
     expect(authService.signIn).toHaveBeenCalledWith(signInDto);
   });
 
@@ -98,6 +100,7 @@ describe('AuthController', () => {
     const result = authController.refreshToken(payload);
 
     expect(result).toEqual({ authToken: newAuthToken });
+    // eslint-disable-next-line @typescript-eslint/unbound-method
     expect(authService.refreshToken).toHaveBeenCalledWith(payload);
   });
 });

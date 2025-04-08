@@ -71,15 +71,19 @@ describe('AuthService', () => {
 
     const result = await authService.signUp(dto);
 
+    // eslint-disable-next-line @typescript-eslint/unbound-method
     expect(mockUserProvider.create).toHaveBeenCalledWith(
       dto.name,
       dto.email,
       hashedPassword,
     );
 
+    // eslint-disable-next-line @typescript-eslint/unbound-method
     expect(mockAuthHelper.signAuthToken).toHaveBeenCalledWith(payload);
+    // eslint-disable-next-line @typescript-eslint/unbound-method
     expect(mockAuthHelper.signRefreshToken).toHaveBeenCalledWith(payload);
 
+    // eslint-disable-next-line @typescript-eslint/unbound-method
     expect(mockUserProvider.userResponse).toHaveBeenCalledWith(
       user,
       authToken,
@@ -130,16 +134,21 @@ describe('AuthService', () => {
 
     const result = await authService.signIn(dto);
 
+    // eslint-disable-next-line @typescript-eslint/unbound-method
     expect(mockUserProvider.getByEmail).toHaveBeenCalledWith(dto.email);
 
+    // eslint-disable-next-line @typescript-eslint/unbound-method
     expect(mockAuthHelper.compare).toHaveBeenCalledWith(
       dto.password,
       user.password,
     );
 
+    // eslint-disable-next-line @typescript-eslint/unbound-method
     expect(mockAuthHelper.signAuthToken).toHaveBeenCalledWith(payload);
+    // eslint-disable-next-line @typescript-eslint/unbound-method
     expect(mockAuthHelper.signRefreshToken).toHaveBeenCalledWith(payload);
 
+    // eslint-disable-next-line @typescript-eslint/unbound-method
     expect(mockUserProvider.userResponse).toHaveBeenCalledWith(
       user,
       authToken,
@@ -167,6 +176,7 @@ describe('AuthService', () => {
 
     const result = authService.refreshToken(payload);
 
+    // eslint-disable-next-line @typescript-eslint/unbound-method
     expect(mockAuthHelper.signAuthToken).toHaveBeenCalledWith(payload);
 
     expect(result).toEqual({ authToken: newAuthToken });
