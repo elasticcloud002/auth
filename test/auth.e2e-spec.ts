@@ -68,7 +68,7 @@ describe('AuthController (e2e)', () => {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     const res: Response = await request(app.getHttpServer())
       .post('/auth/refresh-token')
-      .send({ refreshToken })
+      .set('Refresh-Token', refreshToken)
       .expect(200);
 
     expect(res.body).toHaveProperty('authToken');
