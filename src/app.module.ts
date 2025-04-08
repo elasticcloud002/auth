@@ -5,6 +5,8 @@ import * as Joi from 'joi';
 
 import { AuthModule } from './auth/auth.module';
 import { DashboardModule } from './dashboard/dashboard.module';
+import { CryptoModule } from './crypto/crypto.module';
+import { BitcoinModule } from './bitcoin/bitcoin.module';
 
 @Module({
   imports: [
@@ -26,6 +28,8 @@ import { DashboardModule } from './dashboard/dashboard.module';
     }),
     AuthModule,
     DashboardModule,
+    CryptoModule,
+    BitcoinModule,
   ],
 })
 export class AppModule {}
