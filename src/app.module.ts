@@ -7,6 +7,7 @@ import { AuthModule } from './auth/auth.module';
 import { DashboardModule } from './dashboard/dashboard.module';
 import { CryptoModule } from './crypto/crypto.module';
 import { BitcoinModule } from './bitcoin/bitcoin.module';
+import { WalletModule } from './wallet/wallet.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { BitcoinModule } from './bitcoin/bitcoin.module';
     DashboardModule,
     CryptoModule,
     BitcoinModule,
+    WalletModule,
   ],
 })
 export class AppModule {}

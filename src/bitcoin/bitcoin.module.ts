@@ -7,9 +7,10 @@ import { BitcoinHelper } from './helpers/bitcoin.helper';
 import { CryptoModule } from 'src/crypto/crypto.module';
 import { AuthModule } from 'src/auth/auth.module';
 import { TransactionMiddleware } from './middlewares/transaction.middleware';
+import { WalletModule } from 'src/wallet/wallet.module';
 
 @Module({
-  imports: [CryptoModule, AuthModule],
+  imports: [CryptoModule, AuthModule, WalletModule],
   providers: [BitcoinService, BlockchainProvider, BitcoinHelper],
   controllers: [BitcoinController],
 })
