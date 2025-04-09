@@ -88,6 +88,8 @@ describe('BitcoinController (e2e)', () => {
       .send(dto)
       .expect(200);
 
+    await walletModel.deleteMany({ userId: userId });
+
     expect(res.text).toMatch(/^[a-zA-Z0-9_-]+$/);
   });
 });
