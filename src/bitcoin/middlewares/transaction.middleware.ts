@@ -5,10 +5,10 @@ import {
 } from '@nestjs/common';
 import { Response, NextFunction } from 'express';
 
-import { AuthHelper } from 'src/auth/helpers/auth.helper';
+import { AuthHelper } from '../../auth/helpers/auth.helper';
 import { TransactionRequest } from '../interfaces/transaction-request.interface';
-import { WalletProvider } from 'src/wallet/providers/wallet.provider';
-import { CryptoService } from 'src/crypto/crypto.service';
+import { WalletProvider } from '../../wallet/providers/wallet.provider';
+import { CryptoService } from '../../crypto/crypto.service';
 
 @Injectable()
 export class TransactionMiddleware implements NestMiddleware {
