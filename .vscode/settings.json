@@ -1,5 +1,17 @@
 {
   "cSpell.words": [
-    "dtos"
+    "bitcoinjs",
+    "dtos",
+    "ecpair",
+    "IUTXO",
+    "psbt",
+    "qexample",
+    "qexampleaddress",
+    "satoshis",
+    "Schnorr",
+    "txhex",
+    "Utxo",
+    "utxos",
+    "vout"
   ]
 }
