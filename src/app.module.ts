@@ -16,6 +16,7 @@ import { WalletModule } from './wallet/wallet.module';
       envFilePath: '.env',
       validationSchema: Joi.object({
         PORT: Joi.number().integer(),
+        IV_LENGTH: Joi.number().integer().required(),
       }),
     }),
     MongooseModule.forRootAsync({
