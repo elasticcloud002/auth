@@ -9,7 +9,7 @@ import {
 
 import { BitcoinService } from './bitcoin.service';
 import { TransactionDto } from './dtos/transaction.dto';
-import { AuthGuard } from 'src/auth/guards/auth.guard';
+import { AuthGuard } from '../auth/guards/auth.guard';
 
 @UseGuards(AuthGuard)
 @Controller('bitcoin')
