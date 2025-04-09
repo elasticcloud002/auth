@@ -18,7 +18,7 @@ export class BitcoinController {
 
   @HttpCode(HttpStatus.OK)
   @Post('transaction')
-  transaction(@Body() dto: TransactionDto) {
+  transaction(@Body() dto: TransactionDto): Promise<string> {
     return this.bitcoinService.transaction(dto);
   }
 }
