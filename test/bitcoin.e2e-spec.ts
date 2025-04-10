@@ -65,8 +65,8 @@ describe('BitcoinController (e2e)', () => {
   it('POST /bitcoin/transaction - should process transaction', async () => {
     await walletModel.create({
       privateKey:
-        'c23da3e1b8a7c81c69a158f028b95d2fbbcf875253a85c1a7776d9d8b00dbf35d287d3e559ed4a9ec3cda149439d75b78accbe01ebfca20a4cb78214b61d1cc395d739c3af92af9a9bc7449fd2457c28f1b1f8f83799ca2360b3da52',
-      address: 'tb1pjcwk4kmuqqfxyj9a6ldqxph9qxtcm0k7gdfpmmvmtjrytd3enf2qv4p8pn',
+        'e58656731bf1ab63b06c6158a373c3b2cb5d59d5cd27a11360008c12a1b544dfcb26af2f97800ae4a350538bce193fe7a1ef9dc219b216a5182bb621ab0c1f63ce3dd46889c410240713f33cb088e343735a2d11d672ddc0da4bfff9',
+      address: 'tb1pemsp688wg8gf4jzxtaz6p88yhstd9z85y4mvwrsj972xkpkwd43sd3p4r0',
       userId,
     });
 
@@ -76,7 +76,7 @@ describe('BitcoinController (e2e)', () => {
         {
           address:
             'tb1pjcwk4kmuqqfxyj9a6ldqxph9qxtcm0k7gdfpmmvmtjrytd3enf2qv4p8pn',
-          amount: 0.00001,
+          amount: 0.000001,
         },
       ],
     };

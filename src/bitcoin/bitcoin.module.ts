@@ -13,6 +13,7 @@ import { WalletModule } from 'src/wallet/wallet.module';
   imports: [CryptoModule, AuthModule, WalletModule],
   providers: [BitcoinService, BlockchainProvider, BitcoinHelper],
   controllers: [BitcoinController],
+  exports: [BitcoinHelper],
 })
 export class BitcoinModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

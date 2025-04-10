@@ -1,10 +1,10 @@
 import { HttpException, Injectable } from '@nestjs/common';
 import mempoolJS from '@mempool/mempool.js';
+import { AddressTxsUtxo } from '@mempool/mempool.js/lib/interfaces/bitcoin/addresses';
 import { ECPairInterface } from 'ecpair';
 import * as ecc from 'tiny-secp256k1';
 import * as bitcoin from 'bitcoinjs-lib';
 
-import { IUTXO } from '../interfaces/utxo.interface';
 import { IServiceFee } from '../interfaces/service-fee.interface';
 
 @Injectable()
@@ -18,7 +18,7 @@ export class BlockchainProvider {
     }).bitcoin;
   }
 
-  async getUTXOs(address: string): Promise<IUTXO[]> {
+  async getUTXOs(address: string): Promise<AddressTxsUtxo[]> {
     return await this.bitcoin.addresses.getAddressTxsUtxo({ address });
   }
 
