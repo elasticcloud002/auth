@@ -76,7 +76,7 @@ describe('BitcoinController (e2e)', () => {
         {
           address:
             'tb1pjcwk4kmuqqfxyj9a6ldqxph9qxtcm0k7gdfpmmvmtjrytd3enf2qv4p8pn',
-          amount: 0.000001,
+          amount: 0.00001,
         },
       ],
     };
