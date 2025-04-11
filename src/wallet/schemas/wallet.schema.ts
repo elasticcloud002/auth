@@ -11,9 +11,6 @@ export class Wallet extends Document {
   @Prop({ type: String, required: true })
   address: string;
 
-  @Prop({ type: Number, default: 0 })
-  balance: number;
-
   @Prop({ type: Types.ObjectId, ref: 'User', required: true })
   userId: Types.ObjectId | User;
 }

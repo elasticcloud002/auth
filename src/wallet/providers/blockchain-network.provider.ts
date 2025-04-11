@@ -16,4 +16,8 @@ export class BlockchainNetworkProvider {
   async getTransactions(address: string): Promise<Tx[]> {
     return await this.bitcoin.addresses.getAddressTxs({ address });
   }
+
+  async getBalance(address: string) {
+    return await this.bitcoin.addresses.getAddress({ address });
+  }
 }
