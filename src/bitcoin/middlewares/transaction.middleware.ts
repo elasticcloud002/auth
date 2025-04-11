@@ -3,10 +3,9 @@ import {
   NestMiddleware,
   UnauthorizedException,
 } from '@nestjs/common';
-import { Response, NextFunction } from 'express';
+import { Response, NextFunction, Request } from 'express';
 
 import { AuthHelper } from '../../auth/helpers/auth.helper';
-import { TransactionRequest } from '../interfaces/transaction-request.interface';
 import { WalletProvider } from '../../wallet/providers/wallet.provider';
 import { CryptoService } from '../../crypto/crypto.service';
 
@@ -18,7 +17,7 @@ export class TransactionMiddleware implements NestMiddleware {
     private readonly cryptoService: CryptoService,
   ) {}
 
-  async use(req: TransactionRequest, res: Response, next: NextFunction) {
+  async use(req: Request, res: Response, next: NextFunction): Promise<void> {
     const authToken = this.authHelper.extractToken(req);
     if (!authToken) throw new UnauthorizedException();
 
@@ -28,7 +27,7 @@ export class TransactionMiddleware implements NestMiddleware {
     const wallet = await this.walletProvider.getByUserId(payload.sub);
     const privateKey = this.cryptoService.decrypt(wallet.privateKey);
 
-    req.body.privateKey = privateKey;
+    req.body = { privateKey };
 
     next();
   }

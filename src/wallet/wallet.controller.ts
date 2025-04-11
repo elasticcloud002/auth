@@ -6,7 +6,6 @@ import { WalletService } from './wallet.service';
 import { Wallet } from './schemas/wallet.schema';
 import { ITransaction } from './interfaces/transaction.interface';
 
-@UseGuards(AuthGuard)
 @Controller('wallet')
 export class WalletController {
   constructor(private readonly walletService: WalletService) {}
@@ -16,6 +15,7 @@ export class WalletController {
     return this.walletService.createWallet(userId);
   }
 
+  @UseGuards(AuthGuard)
   @Get('transactions/:address')
   getTransactions(@Param('address') address: string): Promise<ITransaction[]> {
     return this.walletService.getTransactions(address);

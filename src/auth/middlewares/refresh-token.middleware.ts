@@ -11,7 +11,7 @@ import { AuthHelper } from '../helpers/auth.helper';
 export class RefreshTokenMiddleware implements NestMiddleware {
   constructor(private readonly authHelper: AuthHelper) {}
 
-  use(req: Request, res: Response, next: NextFunction) {
+  use(req: Request, res: Response, next: NextFunction): void {
     const refreshToken = req?.headers['refresh-token'] as string;
     if (!refreshToken) throw new UnauthorizedException();
 
