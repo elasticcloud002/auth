@@ -10,7 +10,7 @@ import { Server, Socket } from 'socket.io';
 
 import { WebSocketMiddleware } from '../middleware/web-socket.middleware';
 import { TransactionDto } from '../dtos/transaction.dto';
-import { ISocket } from './socket.interface';
+import { ISocket } from './interfaces/socket.interface';
 
 @WebSocketGateway(8181, {
   namespace: 'api/transaction',

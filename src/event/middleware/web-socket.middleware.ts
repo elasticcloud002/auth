@@ -2,7 +2,7 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { ExtendedError } from 'socket.io';
 
 import { AuthHelper } from 'src/auth/helpers/auth.helper';
-import { ISocket } from '../transaction/socket.interface';
+import { ISocket } from '../transaction/interfaces/socket.interface';
 
 @Injectable()
 export class WebSocketMiddleware {
