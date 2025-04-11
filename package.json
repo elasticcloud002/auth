@@ -27,6 +27,8 @@
     "@nestjs/jwt": "^11.0.0",
     "@nestjs/mongoose": "^11.0.3",
     "@nestjs/platform-express": "^11.0.1",
+    "@nestjs/platform-socket.io": "^11.0.15",
+    "@nestjs/websockets": "^11.0.15",
     "axios": "^1.8.4",
     "bcrypt": "^5.1.1",
     "bitcoinjs-lib": "^6.1.0",

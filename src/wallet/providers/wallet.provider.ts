@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 
 import { Wallet } from '../schemas/wallet.schema';
+import { BalanceEvent } from '../enums/balance-event.enum';
 
 @Injectable()
 export class WalletProvider {
@@ -25,5 +26,20 @@ export class WalletProvider {
     if (!wallet) throw new HttpException('Wallet not found', 404);
 
     return wallet;
+  }
+
+  async updateBalance(
+    userId: Types.ObjectId,
+    value: number,
+    event: BalanceEvent,
+  ): Promise<Wallet | null> {
+    userId = new Types.ObjectId(userId);
+    if (event === BalanceEvent.dec) value = -value;
+
+    return await this.walletModel.findOneAndUpdate(
+      { userId },
+      { $inc: { balance: value } },
+      { new: true },
+    );
   }
 }
