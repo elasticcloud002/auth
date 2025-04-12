@@ -22,6 +22,10 @@ describe('BitcoinController (e2e)', () => {
     await app.init();
   });
 
+  afterAll(async () => {
+    await app.close();
+  });
+
   it('POST /auth/sign-in - should sign in user', async () => {
     const credentials = { email: 'test@email.com', password: 'pass1234' };
     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument

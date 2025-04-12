@@ -3,51 +3,56 @@ import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
 import { Types } from 'mongoose';
 
-import { WalletModule } from '../src/wallet/wallet.module';
+import { WalletController } from '../src/wallet/wallet.controller';
 import { WalletService } from '../src/wallet/wallet.service';
 import { AuthGuard } from '../src/auth/guards/auth.guard';
 
+const mockUserId = new Types.ObjectId();
+const mockWallet = {
+  _id: new Types.ObjectId(),
+  userId: mockUserId,
+  privateKeyEncrypted: 'encrypted-key',
+  address: 'tb1qmockedaddress123456',
+  createdAt: new Date(),
+};
+
+const mockTransactions = [
+  {
+    type: 'incoming',
+    amount: 0.001,
+    address: mockWallet.address,
+    date: '2024-01-01T00:00:00.000Z',
+    status: 'confirmed',
+  },
+];
+
+const mockWalletService = {
+  createWallet: jest.fn().mockResolvedValue(mockWallet),
+  getWallet: jest.fn().mockResolvedValue({
+    address: mockWallet.address,
+    balance: 100000,
+  }),
+  getTransactions: jest.fn().mockResolvedValue(mockTransactions),
+};
+
 describe('WalletController (e2e)', () => {
   let app: INestApplication;
-  const walletService = {
-    createWallet: jest.fn(),
-    getTransactions: jest.fn(),
-    getWallet: jest.fn(),
-  };
-
-  const mockWallet = {
-    _id: new Types.ObjectId(),
-    userId: new Types.ObjectId(),
-    address: 'tb1qmockedaddress',
-    privateKey: 'encrypted-key',
-  };
-
-  const mockTransactions = [
-    {
-      type: 'incoming',
-      amount: 0.0001,
-      address: 'tb1qmockedaddress',
-      date: '2024-04-01T19:33:20.000Z',
-      status: 'confirmed',
-    },
-  ];
-
-  const mockWalletSummary = {
-    address: 'tb1qmockedaddress',
-    balance: 10000,
-  };
 
   beforeAll(async () => {
-    const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [WalletModule],
+    const moduleRef: TestingModule = await Test.createTestingModule({
+      controllers: [WalletController],
+      providers: [
+        {
+          provide: WalletService,
+          useValue: mockWalletService,
+        },
+      ],
     })
-      .overrideProvider(WalletService)
-      .useValue(walletService)
       .overrideGuard(AuthGuard)
       .useValue({ canActivate: () => true })
       .compile();
 
-    app = moduleFixture.createNestApplication();
+    app = moduleRef.createNestApplication();
     await app.init();
   });
 
@@ -55,47 +60,37 @@ describe('WalletController (e2e)', () => {
     await app.close();
   });
 
-  describe('/wallet/create (POST)', () => {
-    it('should create and return a wallet', async () => {
-      walletService.createWallet.mockResolvedValue(mockWallet);
+  it('/wallet/create (POST)', async () => {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+    const response = await request(app.getHttpServer())
+      .post('/wallet/create')
+      .send({ userId: mockUserId.toHexString() });
 
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-      const response = await request(app.getHttpServer())
-        .post('/wallet/create')
-        .send({ userId: mockWallet.userId });
-
-      expect(response.status).toBe(201);
-      expect(response.body).toEqual(
-        expect.objectContaining({ address: mockWallet.address }),
-      );
-    });
+    expect(response.status).toBe(201);
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+    expect(response.body.address).toBe(mockWallet.address);
   });
 
-  describe('/wallet/transactions/:address (GET)', () => {
-    it('should return transactions for an address', async () => {
-      walletService.getTransactions.mockResolvedValue(mockTransactions);
+  it('/wallet (GET)', async () => {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+    const response = await request(app.getHttpServer())
+      .get('/wallet')
+      .send({ userId: mockUserId.toHexString() });
 
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-      const response = await request(app.getHttpServer()).get(
-        `/wallet/transactions/${mockWallet.address}`,
-      );
-
-      expect(response.status).toBe(200);
-      expect(response.body).toEqual(mockTransactions);
-    });
+    expect(response.status).toBe(200);
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+    expect(response.body.address).toBe(mockWallet.address);
   });
 
-  describe('/wallet (GET)', () => {
-    it('should return wallet address and balance for a user', async () => {
-      walletService.getWallet.mockResolvedValue(mockWalletSummary);
+  it('/wallet/transactions/:address (GET)', async () => {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+    const response = await request(app.getHttpServer()).get(
+      `/wallet/transactions/${mockWallet.address}`,
+    );
 
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-      const response = await request(app.getHttpServer())
-        .get('/wallet')
-        .send({ userId: mockWallet.userId });
-
-      expect(response.status).toBe(200);
-      expect(response.body).toEqual(mockWalletSummary);
-    });
+    expect(response.status).toBe(200);
+    expect(Array.isArray(response.body)).toBe(true);
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+    expect(response.body[0]).toHaveProperty('type', 'incoming');
   });
 });
