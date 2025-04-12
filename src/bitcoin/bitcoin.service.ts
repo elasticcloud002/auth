@@ -35,9 +35,11 @@ export class BitcoinService {
           network: this.network,
         },
       );
+
       const tweakedPrivateKey = this.ECPair.fromPrivateKey(
         Buffer.from(this.blockchainProvider.tweakSigner(keyPair)),
       );
+
       const p2tr = bitcoin.payments.p2tr({
         internalPubkey: Buffer.from(ecc.xOnlyPointFromPoint(keyPair.publicKey)),
         network: this.network,
