@@ -1,7 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { BlockchainProvider } from './blockchain.provider';
 import { ECPairInterface } from 'ecpair';
 import * as bitcoin from 'bitcoinjs-lib';
+
+import { BlockchainProvider } from './blockchain.provider';
 
 jest.mock('@mempool/mempool.js', () => ({
   __esModule: true,
