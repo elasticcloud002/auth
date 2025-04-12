@@ -5,7 +5,7 @@ import {
 } from '@nestjs/common';
 import { NextFunction, Request, Response } from 'express';
 
-import { AuthHelper } from 'src/auth/helpers/auth.helper';
+import { AuthHelper } from '../../auth/helpers/auth.helper';
 
 @Injectable()
 export class WalletMiddleware implements NestMiddleware {

@@ -1,12 +1,11 @@
 import { UnauthorizedException } from '@nestjs/common';
-import { Response, NextFunction } from 'express';
+import { Response, NextFunction, Request } from 'express';
 import { Types } from 'mongoose';
 
 import { TransactionMiddleware } from './transaction.middleware';
 import { AuthHelper } from 'src/auth/helpers/auth.helper';
 import { WalletProvider } from 'src/wallet/providers/wallet.provider';
 import { CryptoService } from 'src/crypto/crypto.service';
-import { TransactionRequest } from '../interfaces/transaction-request.interface';
 import { IJwtPayload } from 'src/auth/interfaces/jwt-payload.interface';
 
 describe('TransactionMiddleware', () => {
@@ -44,7 +43,7 @@ describe('TransactionMiddleware', () => {
   it('should throw UnauthorizedException if no token is found', async () => {
     const mockRequest = {
       headers: {},
-    } as unknown as TransactionRequest;
+    } as unknown as Request;
 
     authHelper.extractToken.mockReturnValue(undefined);
 
@@ -58,7 +57,7 @@ describe('TransactionMiddleware', () => {
       headers: {
         authorization: 'Bearer invalid_token',
       },
-    } as unknown as TransactionRequest;
+    } as unknown as Request;
 
     authHelper.extractToken.mockReturnValue('invalid_token');
 
@@ -89,7 +88,7 @@ describe('TransactionMiddleware', () => {
         authorization: 'Bearer valid_token',
       },
       body: {},
-    } as unknown as TransactionRequest;
+    } as unknown as Request;
 
     authHelper.extractToken.mockReturnValue('valid_token');
     authHelper.verifyToken.mockReturnValue(mockPayload);
@@ -107,6 +106,7 @@ describe('TransactionMiddleware', () => {
     expect(walletProvider.getByUserId).toHaveBeenCalledWith(mockPayload.sub);
     // eslint-disable-next-line @typescript-eslint/unbound-method
     expect(cryptoService.decrypt).toHaveBeenCalledWith('encryptedKey');
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     expect(mockRequest.body.privateKey).toBe(decryptedKey);
     expect(mockNext).toHaveBeenCalled();
   });

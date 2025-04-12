@@ -46,7 +46,6 @@ describe('AuthController', () => {
     };
 
     const mockUser: IUser = {
-      id: new Types.ObjectId(),
       name: 'John Doe',
       email: 'john@example.com',
       authToken: 'authToken123',
@@ -69,7 +68,6 @@ describe('AuthController', () => {
     };
 
     const mockUser: IUser = {
-      id: new Types.ObjectId(),
       name: 'John Doe',
       email: 'john@example.com',
       authToken: 'authToken123',

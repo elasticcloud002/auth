@@ -29,6 +29,6 @@ import { BitcoinModule } from 'src/bitcoin/bitcoin.module';
 })
 export class WalletModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(WalletMiddleware).forRoutes('wallet/create');
+    consumer.apply(WalletMiddleware).forRoutes('wallet/create', 'wallet');
   }
 }

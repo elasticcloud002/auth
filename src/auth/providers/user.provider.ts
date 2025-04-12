@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model, Types } from 'mongoose';
+import { Model } from 'mongoose';
 
 import { User } from '../schemas/user.schema';
 import { IUser } from '../interfaces/user.interface';
@@ -21,7 +21,6 @@ export class UserProvider {
 
   userResponse(user: User, authToken?: string, refreshToken?: string): IUser {
     return {
-      id: user._id as Types.ObjectId,
       name: user.name,
       email: user.email,
       authToken,

@@ -73,7 +73,6 @@ describe('UserProvider', () => {
     const result = userProvider.userResponse(user, authToken, refreshToken);
 
     const expected: IUser = {
-      id: user._id as Types.ObjectId,
       name: user.name,
       email: user.email,
       authToken,

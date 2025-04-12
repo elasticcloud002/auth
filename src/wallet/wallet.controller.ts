@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { Types } from 'mongoose';
 
-import { AuthGuard } from 'src/auth/guards/auth.guard';
+import { AuthGuard } from '../auth/guards/auth.guard';
 import { WalletService } from './wallet.service';
 import { Wallet } from './schemas/wallet.schema';
 import { ITransaction } from './interfaces/transaction.interface';
@@ -19,5 +19,13 @@ export class WalletController {
   @Get('transactions/:address')
   getTransactions(@Param('address') address: string): Promise<ITransaction[]> {
     return this.walletService.getTransactions(address);
+  }
+
+  @UseGuards(AuthGuard)
+  @Get()
+  getWallet(
+    @Body('userId') userId: Types.ObjectId,
+  ): Promise<{ address: string; balance: number }> {
+    return this.walletService.getWallet(userId);
   }
 }

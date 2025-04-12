@@ -6,10 +6,10 @@ import * as ecc from 'tiny-secp256k1';
 
 import { WalletProvider } from './providers/wallet.provider';
 import { Wallet } from './schemas/wallet.schema';
-import { CryptoService } from 'src/crypto/crypto.service';
+import { CryptoService } from '../crypto/crypto.service';
 import { BlockchainNetworkProvider } from './providers/blockchain-network.provider';
 import { ITransaction } from './interfaces/transaction.interface';
-import { BitcoinHelper } from 'src/bitcoin/helpers/bitcoin.helper';
+import { BitcoinHelper } from '../bitcoin/helpers/bitcoin.helper';
 
 @Injectable()
 export class WalletService {
@@ -93,5 +93,22 @@ export class WalletService {
     });
 
     return transactions;
+  }
+
+  async getWallet(
+    userId: Types.ObjectId,
+  ): Promise<{ address: string; balance: number }> {
+    const wallet = await this.walletProvider.getByUserId(userId);
+    const addressInfo = await this.blockchainNetworkProvider.getAddress(
+      wallet.address,
+    );
+
+    return {
+      address: wallet.address,
+      balance: this.bitcoinHelper.btcToSat(
+        addressInfo.chain_stats.funded_txo_sum -
+          addressInfo.chain_stats.spent_txo_sum,
+      ),
+    };
   }
 }

@@ -62,7 +62,6 @@ describe('AuthService', () => {
     mockAuthHelper.signAuthToken.mockReturnValue(authToken);
     mockAuthHelper.signRefreshToken.mockReturnValue(refreshToken);
     mockUserProvider.userResponse.mockReturnValue({
-      id: user._id,
       name: user.name,
       email: user.email,
       authToken,
@@ -91,7 +90,6 @@ describe('AuthService', () => {
     );
 
     expect(result).toEqual({
-      id: user._id,
       name: user.name,
       email: user.email,
       authToken,
@@ -125,7 +123,6 @@ describe('AuthService', () => {
     mockAuthHelper.signAuthToken.mockReturnValue(authToken);
     mockAuthHelper.signRefreshToken.mockReturnValue(refreshToken);
     mockUserProvider.userResponse.mockReturnValue({
-      id: user._id,
       name: user.name,
       email: user.email,
       authToken,
@@ -156,7 +153,6 @@ describe('AuthService', () => {
     );
 
     expect(result).toEqual({
-      id: user._id,
       name: user.name,
       email: user.email,
       authToken,

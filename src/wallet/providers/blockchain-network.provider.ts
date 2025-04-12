@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import mempoolJS from '@mempool/mempool.js';
 import { Tx } from '@mempool/mempool.js/lib/interfaces/bitcoin/transactions';
+import { Address } from '@mempool/mempool.js/lib/interfaces/bitcoin/addresses';
 
 @Injectable()
 export class BlockchainNetworkProvider {
@@ -17,7 +18,7 @@ export class BlockchainNetworkProvider {
     return await this.bitcoin.addresses.getAddressTxs({ address });
   }
 
-  async getBalance(address: string) {
+  async getAddress(address: string): Promise<Address> {
     return await this.bitcoin.addresses.getAddress({ address });
   }
 }
