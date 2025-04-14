@@ -105,7 +105,7 @@ export class WalletService {
 
     return {
       address: wallet.address,
-      balance: this.bitcoinHelper.btcToSat(
+      balance: this.bitcoinHelper.satToBtc(
         addressInfo.chain_stats.funded_txo_sum -
           addressInfo.chain_stats.spent_txo_sum,
       ),
