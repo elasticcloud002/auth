@@ -127,10 +127,10 @@ describe('WalletService', () => {
 
       expect(result).toEqual({
         address,
-        balance: mockBitcoinHelper.btcToSat(15000),
+        balance: mockBitcoinHelper.satToBtc(15000),
       });
 
-      expect(mockBitcoinHelper.btcToSat).toHaveBeenCalledWith(15000);
+      expect(mockBitcoinHelper.satToBtc).toHaveBeenCalledWith(15000);
     });
   });
 });
